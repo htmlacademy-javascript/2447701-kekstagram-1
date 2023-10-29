@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Павел Антонов](https://up.htmlacademy.ru/javascript-individual/1/user/2447701).
-* Наставник: `Неизвестно`.
+- Студент: [Павел Антонов](https://up.htmlacademy.ru/javascript-individual/1/user/2447701).
+- Наставник: `Алексей Хабиров`.
 
 ---
 

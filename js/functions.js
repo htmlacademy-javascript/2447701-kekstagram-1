@@ -7,9 +7,9 @@ function definePalendrome(value) {
   const newValue = value.split("").reverse().join("");
 
   if (newValue === value) {
-    return "Палиндром";
+    return true;
   }
-  return "Непалиндром";
+  return false;
 }
 definePalendrome("топот");
 

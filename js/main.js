@@ -18,9 +18,6 @@ const NAMES = [
 
 const PICTURES_COUNT = 25;
 
-const PICTURE = [];
-const COMMENTS = [];
-
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -46,16 +43,10 @@ const getRandomIntegerArray = (a, b) => {
   return inner;
 };
 
-const uniqueGenerator = getRandomIntegerArray(1, 25);
+const uniqueIdGenerator = getRandomIntegerArray(1, 25);
+const uniquePhotoGenerator = getRandomIntegerArray(1, 25);
 
-const createPicture = () => ({
-  id: uniqueGenerator(),
-  url: `photos/${uniqueGenerator()}/jpg`,
-  description: 'Просто красиво!',
-  likes: getRandomInteger(15, 200),
-});
-
-const createComments = () => ({
+const createComment = () => ({
   comments: {
     id: getRandomInteger(1, 1000),
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
@@ -64,17 +55,34 @@ const createComments = () => ({
   },
 });
 
-for (let i = 0; i < PICTURES_COUNT; i++) {
-  PICTURE.push(createPicture());
-}
+const createComments = () => {
+  const comments = [];
 
-console.log(PICTURE);
+  for (let i = 0; i < getRandomInteger(0, 6); i++) {
+    const comment = createComment();
+    comments.push(comment);
+  }
+  return comments;
+};
 
-for (let i = 0; i < PICTURES_COUNT; i++) {
-  COMMENTS.push(createComments());
-}
+const createPicture = () => ({
+  id: uniqueIdGenerator(),
+  url: `photos/${uniquePhotoGenerator()}.jpg`,
+  description: 'Просто красиво!',
+  likes: getRandomInteger(15, 200),
+  comments: createComments(),
+});
 
-PICTURE.push(COMMENTS);
+const createPictures = () => {
+  const pict = [];
 
-console.log(COMMENTS);
-console.log(PICTURE);
+  for (let i = 0; i < PICTURES_COUNT; i++) {
+    const picture = createPicture();
+    pict.push(picture);
+  }
+  return pict;
+};
+
+const pictures = createPictures();
+
+console.log(pictures);

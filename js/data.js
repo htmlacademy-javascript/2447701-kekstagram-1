@@ -1,6 +1,8 @@
-import { getRandomInteger } from './util.js';
-import { getRandomIntegerArray } from './util.js';
-import { getRandArrayElement } from './util.js';
+import {
+  getRandomInteger,
+  getRandomIntegerArray,
+  getRandArrayElement,
+} from './util.js';
 
 const MESSAGE = ['Всё отлично!', 'В целом всё неплохо. Но не всё.'];
 
@@ -60,6 +62,4 @@ const createPictures = () => {
   return pict;
 };
 
-const pictures = createPictures();
-
-export { pictures };
+export { createPictures };

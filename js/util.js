@@ -23,6 +23,4 @@ const getRandomIntegerArray = (a, b) => {
   return inner;
 };
 
-export { getRandomInteger };
-export { getRandArrayElement };
-export { getRandomIntegerArray };
+export { getRandomInteger, getRandArrayElement, getRandomIntegerArray };

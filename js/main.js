@@ -1,2 +1,5 @@
 import { createPictures } from './data.js';
-console.log(createPictures());
+import { renderPictures } from './render-thumbs.js';
+
+const pictures = createPictures();
+renderPictures(pictures);

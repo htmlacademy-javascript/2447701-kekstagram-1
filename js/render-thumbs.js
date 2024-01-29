@@ -12,7 +12,7 @@ const renderPictures = (pictures) => {
     pictureElement.querySelector('.picture__comments').textContent =
       picture.comments.length;
     pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-    pictureElement.dataset.pictId = picture.id;
+    pictureElement.dataset.pictureId = picture.id;
 
     pictureFragment.appendChild(pictureElement);
   });

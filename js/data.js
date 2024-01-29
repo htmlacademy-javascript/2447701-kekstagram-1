@@ -26,12 +26,10 @@ const uniqueIdGenerator = getRandomIntegerArray(1, 25);
 const uniquePhotoGenerator = getRandomIntegerArray(1, 25);
 
 const createComment = () => ({
-  comments: {
-    id: getRandomInteger(1, 1000),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: getRandArrayElement(MESSAGE),
-    name: getRandArrayElement(NAMES),
-  },
+  id: getRandomInteger(1, 1000),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandArrayElement(MESSAGE),
+  name: getRandArrayElement(NAMES),
 });
 
 const createComments = () => {

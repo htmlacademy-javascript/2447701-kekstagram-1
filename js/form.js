@@ -9,7 +9,7 @@ const form = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('#upload-file');
 const hashtagContainer = document.querySelector('.text__hashtags');
 const commentContainer = document.querySelector('.text__description');
-
+let zenden = aba;
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',

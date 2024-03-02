@@ -1,3 +1,6 @@
+import { onScaleReset } from './scale.js';
+import { resetEffect } from './effect.js';
+
 const MAX_HASHTAG = 5;
 const VALID_PATTERN = /^#[a-za-яё0-9]{1,19}$/i;
 const TAG_ERROR_TEXT = 'Неправильно заполнены хештеги';
@@ -46,6 +49,8 @@ const closePopupImg = () => {
   document.removeEventListener('keydown', onPopupImgEscKeydown);
   form.reset();
   pristine.reset();
+  onScaleReset();
+  resetEffect();
 };
 
 function onPopupImgEscKeydown(evt) {

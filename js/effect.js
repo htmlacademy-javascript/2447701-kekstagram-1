@@ -54,24 +54,24 @@ let chosenEffect = DEFAULT_MEANING_EFFECT;
 
 const effectsContainer = document.querySelector('.effects');
 const imageContainer = document.querySelector('.img-upload__preview img');
-const sliderContainer = document.querySelector('.effects-level__slider');
+const sliderContainer = document.querySelector('.effect-level__slider');
 const effectLevelContainer = document.querySelector('.effect-level__value');
 const sliderUploadContainer = document.querySelector(
   '.img-upload__effect-level'
 );
 
-const getShowSlider = () => {
+const showSlider = () => {
   sliderUploadContainer.classList.remove('hidden');
 };
 
-const getHideSlider = () => {
+const hideSlider = () => {
   sliderUploadContainer.classList.add('hidden');
 };
 
 const isDefault = () => chosenEffect === DEFAULT_MEANING_EFFECT;
 
 const updateSlider = () => {
-  sliderContainer.noUiSlider.updateOption({
+  sliderContainer.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
       max: chosenEffect.max,
@@ -81,15 +81,15 @@ const updateSlider = () => {
   });
 
   if (isDefault()) {
-    getHideSlider();
+    hideSlider();
   } else {
-    getShowSlider();
+    showSlider();
   }
 };
 
 const onEffectsChange = (evt) => {
   chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
-  imageContainer.className = 'effects__preview--${chosenEffect.name}';
+  imageContainer.className = `effects__preview--${chosenEffect.name}`;
   updateSlider();
 };
 
@@ -106,22 +106,22 @@ const resetEffect = () => {
   updateSlider();
 };
 
-const getSlider = noUiSlider.create(sliderContainer, {
-  range: {
-    min: DEFAULT_MEANING_EFFECT.min,
-    max: DEFAULT_MEANING_EFFECT.max,
-  },
-  start: DEFAULT_MEANING_EFFECT.max,
-  step: DEFAULT_MEANING_EFFECT.step,
-  connect: 'lower',
-});
+const getSlider = () =>
+  noUiSlider.create(sliderContainer, {
+    range: {
+      min: DEFAULT_MEANING_EFFECT.min,
+      max: DEFAULT_MEANING_EFFECT.max,
+    },
+    start: DEFAULT_MEANING_EFFECT.max,
+    step: DEFAULT_MEANING_EFFECT.step,
+    connect: 'lower',
+  });
 
-const getEffect = () => {
+const initEffectSlider = () => {
   getSlider();
   effectsContainer.addEventListener('change', onEffectsChange);
   sliderContainer.noUiSlider.on('update', onUpdateSlider);
-  getHideSlider();
+  hideSlider();
 };
 
-export { resetEffect };
-export { getEffect };
+export { resetEffect, initEffectSlider };

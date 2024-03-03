@@ -10,13 +10,11 @@ const controlBiggerContainer = document.querySelector(
   '.scale__control--bigger'
 );
 const controlValueContainer = document.querySelector('.scale__control--value');
-const uploadPreviewContainer = document.querySelector('.img-upload__preview');
+const uploadPreviewContainer = document.querySelector(
+  '.img-upload__preview img'
+);
 
-const getParseValue = () => {
-  const nowValue = parseInt(controlValueContainer.value, 10);
-
-  return nowValue;
-};
+const getParsedValue = () => parseInt(controlValueContainer.value, 10);
 
 const getScaleImage = (value) => {
   uploadPreviewContainer.style.transform = `scale(${value / 100})`;
@@ -24,29 +22,22 @@ const getScaleImage = (value) => {
 };
 
 const onSmallerClickButton = () => {
-  let valueSmall = getParseValue() - SCALE_STEP;
+  const newValue = getParsedValue() - SCALE_STEP;
 
-  if (valueSmall < SCALE_MIN) {
-    valueSmall = SCALE_MIN;
-  }
-  getScaleImage(valueSmall);
+  getScaleImage(Math.max(newValue, SCALE_MIN));
 };
 
 const onBiggerClickButton = () => {
-  let valueBig = getParseValue() + SCALE_STEP;
+  const newValue = getParsedValue() + SCALE_STEP;
 
-  if (valueBig > SCALE_MAX) {
-    valueBig = SCALE_MAX;
-  }
-  getScaleImage(valueBig);
+  getScaleImage(Math.min(newValue, SCALE_MAX));
 };
 
-const onScaleReset = () => getScaleImage(SCALE_DEFAULT);
+const resetScale = () => getScaleImage(SCALE_DEFAULT);
 
-const changeScaleImage = () => {
+const initScaleImage = () => {
   controlBiggerContainer.addEventListener('click', onBiggerClickButton);
   controlSmallerContainer.addEventListener('click', onSmallerClickButton);
 };
 
-export { changeScaleImage };
-export { onScaleReset };
+export { initScaleImage, resetScale };

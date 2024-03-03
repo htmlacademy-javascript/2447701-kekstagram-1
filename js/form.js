@@ -1,4 +1,4 @@
-import { onScaleReset } from './scale.js';
+import { resetScale } from './scale.js';
 import { resetEffect } from './effect.js';
 
 const MAX_HASHTAG = 5;
@@ -49,7 +49,7 @@ const closePopupImg = () => {
   document.removeEventListener('keydown', onPopupImgEscKeydown);
   form.reset();
   pristine.reset();
-  onScaleReset();
+  resetScale();
   resetEffect();
 };
 

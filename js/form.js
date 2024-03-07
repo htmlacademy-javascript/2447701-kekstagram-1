@@ -1,6 +1,6 @@
 import { resetScale } from './scale.js';
 import { resetEffect } from './effect.js';
-import { sendData } from './api-receiving.js';
+import { sendData } from './api.js';
 
 const MAX_HASHTAG = 5;
 const VALID_PATTERN = /^#[a-za-яё0-9]{1,19}$/i;
@@ -44,11 +44,15 @@ const showSuccess = () => {
   const successTemplate = document
     .querySelector('#success')
     .content.querySelector('.success');
+  const closeSuccessButton = document
+    .querySelector('#success')
+    .content.querySelector('.success_button');
   const successElement = successTemplate.cloneNode(true);
   bodyContainer.append(successElement);
 
-  const closeSuccessButton = document.querySelector('.success_button');
-  closeSuccessButton.addEventListener('click', successElement.remove());
+  closeSuccessButton.addEventListener('click', () => {
+    successTemplate.remove();
+  });
 };
 
 const isValidTag = (tag) => VALID_PATTERN.test(tag);
@@ -92,7 +96,7 @@ function onPopupImgEscKeydown(evt) {
     closePopupImg();
   }
 }
-const closeValidForm = () => {
+const sendingValidForm = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -104,25 +108,9 @@ const closeValidForm = () => {
         new FormData(evt.target)
       );
     }
-    //unblockSubmitButton();
   });
   //unblockSubmitButton();
 };
-
-// const onFormSubmit = (evt) => {
-//   evt.preventDefault();
-//   const isValid = pristine.validate();
-//   if (isValid) {
-//     blockSubmitButton();
-//     sendData(
-//       () => showSuccess(),
-//       () => showError(),
-//       new FormData(evt.target)
-//     );
-//     //console.log({ isValid });
-//}
-//unblockSubmitButton();
-//};
 
 const renderPopupForm = () => {
   pristine.addValidator(hashtagContainer, validateTags, TAG_ERROR_TEXT);
@@ -130,8 +118,7 @@ const renderPopupForm = () => {
   uploadFile.addEventListener('change', () => {
     openPopupImg();
   });
-  closeValidForm(closePopupImg);
-  //form.addEventListener('submit', onFormSubmit);
+  sendingValidForm();
   closeImgUpload.addEventListener('click', () => closePopupImg());
 };
 

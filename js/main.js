@@ -13,14 +13,7 @@ import { getData } from './api-receiving.js';
 renderPopupForm();
 initScaleImage();
 initEffectSlider();
-getData()
-  .then((pictures) => {
-    renderPictures(pictures);
-  })
-  .then((pictures) => {
-    renderGallery(pictures);
-  });
-console.log(getData());
-//.then((pictures) => {
-//renderGallery(pictures);
-//});
+getData().then((pictures) => {
+  renderPictures(pictures);
+  renderGallery(pictures);
+});

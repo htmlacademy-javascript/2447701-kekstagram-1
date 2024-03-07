@@ -1,5 +1,6 @@
 import { resetScale } from './scale.js';
 import { resetEffect } from './effect.js';
+import { sendData } from './api-receiving.js';
 
 const MAX_HASHTAG = 5;
 const VALID_PATTERN = /^#[a-za-яё0-9]{1,19}$/i;
@@ -17,6 +18,38 @@ const pristine = new Pristine(form, {
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
 });
+const submitButton = document.querySelector('.img-upload__submit');
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+const showError = () => {
+  const errorTemplate = document
+    .querySelector('#error')
+    .content.querySelector('.error');
+  const closeErrorButton = document
+    .querySelector('#error')
+    .content.querySelector('.error__button');
+  const errorElement = errorTemplate.cloneNode(true);
+  bodyContainer.append(errorElement);
+  closeErrorButton.addEventListener('click', errorElement.remove());
+};
+
+const showSuccess = () => {
+  const successTemplate = document
+    .querySelector('#success')
+    .content.querySelector('.success');
+  const successElement = successTemplate.cloneNode(true);
+  bodyContainer.append(successElement);
+
+  const closeSuccessButton = document.querySelector('.success_button');
+  closeSuccessButton.addEventListener('click', successElement.remove());
+};
 
 const isValidTag = (tag) => VALID_PATTERN.test(tag);
 
@@ -59,12 +92,37 @@ function onPopupImgEscKeydown(evt) {
     closePopupImg();
   }
 }
-
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  console.log({ isValid });
+const closeValidForm = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => showSuccess(),
+        () => showError(),
+        new FormData(evt.target)
+      );
+    }
+    //unblockSubmitButton();
+  });
+  //unblockSubmitButton();
 };
+
+// const onFormSubmit = (evt) => {
+//   evt.preventDefault();
+//   const isValid = pristine.validate();
+//   if (isValid) {
+//     blockSubmitButton();
+//     sendData(
+//       () => showSuccess(),
+//       () => showError(),
+//       new FormData(evt.target)
+//     );
+//     //console.log({ isValid });
+//}
+//unblockSubmitButton();
+//};
 
 const renderPopupForm = () => {
   pristine.addValidator(hashtagContainer, validateTags, TAG_ERROR_TEXT);
@@ -72,8 +130,8 @@ const renderPopupForm = () => {
   uploadFile.addEventListener('change', () => {
     openPopupImg();
   });
-
-  form.addEventListener('submit', onFormSubmit);
+  closeValidForm(closePopupImg);
+  //form.addEventListener('submit', onFormSubmit);
   closeImgUpload.addEventListener('click', () => closePopupImg());
 };
 

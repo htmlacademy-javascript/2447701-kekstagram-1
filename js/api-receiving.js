@@ -17,4 +17,21 @@ const getData = () =>
       );
     });
 
-export { getData };
+const sendData = (onSuccess, onFail, formData) => {
+  fetch('https://28.javascript.htmlacademy.pro/kekstagram', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail('Не удалось отправить формую Попробуйте еще раз');
+      }
+    })
+    .catch(() => {
+      onFail('Не удалось отправить формую Попробуйте еще раз');
+    });
+};
+
+export { getData, sendData };

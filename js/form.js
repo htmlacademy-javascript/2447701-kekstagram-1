@@ -1,6 +1,7 @@
 import { resetScale } from './scale.js';
 import { resetEffect } from './effect.js';
 import { sendData } from './api.js';
+import { showErrorPopup, showSuccessPopup } from './popup-e-s.js';
 
 const MAX_HASHTAG = 5;
 const VALID_PATTERN = /^#[a-za-яё0-9]{1,19}$/i;
@@ -28,33 +29,6 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
 };
 
-const showError = () => {
-  const errorTemplate = document
-    .querySelector('#error')
-    .content.querySelector('.error');
-  const closeErrorButton = document
-    .querySelector('#error')
-    .content.querySelector('.error__button');
-  const errorElement = errorTemplate.cloneNode(true);
-  bodyContainer.append(errorElement);
-  closeErrorButton.addEventListener('click', errorElement.remove());
-};
-
-const showSuccess = () => {
-  const successTemplate = document
-    .querySelector('#success')
-    .content.querySelector('.success');
-  const closeSuccessButton = document
-    .querySelector('#success')
-    .content.querySelector('.success_button');
-  const successElement = successTemplate.cloneNode(true);
-  bodyContainer.append(successElement);
-
-  closeSuccessButton.addEventListener('click', () => {
-    successTemplate.remove();
-  });
-};
-
 const isValidTag = (tag) => VALID_PATTERN.test(tag);
 
 const checkCount = (tags) => tags.length <= MAX_HASHTAG;
@@ -72,7 +46,8 @@ const validateTags = (value) => {
 
 const isCommentHashtagFocus = () =>
   document.activeElement === commentContainer ||
-  document.activeElement === hashtagContainer;
+  document.activeElement === hashtagContainer ||
+  bodyContainer.classList.contains('error');
 
 const openPopupImg = () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -96,20 +71,22 @@ function onPopupImgEscKeydown(evt) {
     closePopupImg();
   }
 }
-const sendingValidForm = () => {
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(
-        () => showSuccess(),
-        () => showError(),
-        new FormData(evt.target)
-      );
-    }
-  });
-  //unblockSubmitButton();
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    sendData(new FormData(evt.target))
+      .then(() => {
+        showSuccessPopup();
+        closePopupImg();
+      })
+      .catch(() => {
+        showErrorPopup();
+      })
+      .finally(() => unblockSubmitButton());
+  }
 };
 
 const renderPopupForm = () => {
@@ -118,7 +95,7 @@ const renderPopupForm = () => {
   uploadFile.addEventListener('change', () => {
     openPopupImg();
   });
-  sendingValidForm();
+  form.addEventListener('submit', onFormSubmit);
   closeImgUpload.addEventListener('click', () => closePopupImg());
 };
 

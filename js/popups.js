@@ -9,7 +9,7 @@ const errorTemplate = document
 const showErrorPopup = () => {
   const errorElement = errorTemplate.cloneNode(true);
   const closeErrorButton = errorElement.querySelector('.error__button');
-  const errorInner = errorElement.querySelector('.error');
+  const errorInner = errorElement.querySelector('.error__inner');
   bodyContainer.append(errorElement);
   bodyContainer.classList.add('error');
 
@@ -20,12 +20,8 @@ const showErrorPopup = () => {
   };
 
   closeErrorButton.addEventListener('click', () => closePopupError());
-  document.addEventListener('click', (evt) => {
-    const click = evt.target.classList.value;
-    if (click === errorInner) {
-      errorElement.remove();
-    }
-  });
+  errorInner.addEventListener('click', (evt) => evt.stopPropagation());
+  errorElement.addEventListener('click', () => closePopupError());
 
   function onDocumentKeydown(evt) {
     if (evt.key === 'Escape') {

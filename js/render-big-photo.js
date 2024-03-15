@@ -54,7 +54,7 @@ const openPicturePopup = (data) => {
   renderBigPicture(data);
 };
 
-const renderGallery = (pictures) => {
+const initGallery = (pictures) => {
   pictureContainer.addEventListener('click', (evt) => {
     const thumbnail = evt.target.closest('[data-picture-id]');
     if (!thumbnail) {
@@ -69,4 +69,4 @@ const renderGallery = (pictures) => {
   closeBigPicture.addEventListener('click', () => closePopup());
 };
 
-export { renderGallery };
+export { initGallery };

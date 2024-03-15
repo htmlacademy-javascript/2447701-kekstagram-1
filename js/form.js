@@ -1,7 +1,7 @@
 import { resetScale } from './scale.js';
 import { resetEffect } from './effect.js';
 import { sendData } from './api.js';
-import { showErrorPopup, showSuccessPopup } from './popup-e-s.js';
+import { showErrorPopup, showSuccessPopup } from './popups.js';
 
 const MAX_HASHTAG = 5;
 const VALID_PATTERN = /^#[a-za-яё0-9]{1,19}$/i;
@@ -46,8 +46,7 @@ const validateTags = (value) => {
 
 const isCommentHashtagFocus = () =>
   document.activeElement === commentContainer ||
-  document.activeElement === hashtagContainer ||
-  bodyContainer.classList.contains('error');
+  document.activeElement === hashtagContainer;
 
 const openPopupImg = () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -66,7 +65,11 @@ const closePopupImg = () => {
 };
 
 function onPopupImgEscKeydown(evt) {
-  if (evt.key === 'Escape' && !isCommentHashtagFocus()) {
+  if (
+    evt.key === 'Escape' &&
+    !isCommentHashtagFocus() &&
+    !bodyContainer.classList.contains('error')
+  ) {
     evt.preventDefault();
     closePopupImg();
   }
@@ -75,6 +78,7 @@ function onPopupImgEscKeydown(evt) {
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
+
   if (isValid) {
     blockSubmitButton();
     sendData(new FormData(evt.target))
@@ -95,6 +99,7 @@ const renderPopupForm = () => {
   uploadFile.addEventListener('change', () => {
     openPopupImg();
   });
+
   form.addEventListener('submit', onFormSubmit);
   closeImgUpload.addEventListener('click', () => closePopupImg());
 };

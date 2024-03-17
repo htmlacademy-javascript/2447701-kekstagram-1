@@ -8,13 +8,17 @@ const initLoadedPictures = () => {
     const file = inputAvatarContainer.files[0];
     const fileName = file.name.toLowerCase();
     const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    const newURL = URL.createObjectURL(file);
 
     if (matches) {
-      preview.src = URL.createObjectURL(file);
+      preview.src = newURL;
       previewEffect.forEach(
-        (element) => (element.src = URL.createObjectURL(file))
+        (element) =>
+          (element.style.backgroundImage =
+            'url(`${URL.createObjectURL(file)}`)')
       );
     }
   });
 };
+
 export { initLoadedPictures };

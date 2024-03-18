@@ -14,8 +14,7 @@ const initLoadedPictures = () => {
       preview.src = newURL;
       previewEffect.forEach(
         (element) =>
-          (element.style.backgroundImage =
-            'url(`${URL.createObjectURL(file)}`)')
+          (element.style.backgroundImage = `url(${URL.createObjectURL(file)})`)
       );
     }
   });

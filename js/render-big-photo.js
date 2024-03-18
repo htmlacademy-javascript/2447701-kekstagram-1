@@ -6,6 +6,13 @@ const bigPictureImgContainer = document.querySelector('.big-picture__img img');
 const likesCountContainer = document.querySelector('.likes-count');
 const commentContainer = document.querySelector('.social__comment');
 const commentsContainer = document.querySelector('.social__comments');
+const captionContainer = document.querySelector('.social__caption');
+const commentsCount = document.querySelector('.comments-count');
+const socialCommentLoader = document.querySelector('.social__comments-loader');
+const socialCommentCount = document.querySelector('.social__comment-count');
+
+const COMMENTS_STEP = 5;
+let showComments = 5;
 
 const closePopup = () => {
   bigPicture.classList.add('hidden');
@@ -40,13 +47,42 @@ const createComments = (comments) => {
   commentsContainer.append(commentsFragment);
 };
 
+function renderSocialCommentsCount(picturesData) {
+  socialCommentCount.innerHTML = `${showComments} из <span class="comments-count">${picturesData.comments.length}</span> комментариев`;
+}
+
+const onShowMoreButtonClick = (comments, data) => {
+  showComments += COMMENTS_STEP;
+
+  if (showComments >= comments.length) {
+    socialCommentLoader.classList.add('hidden');
+    showComments = comments.length;
+  } else {
+    socialCommentLoader.classList.remove('.hidden');
+    createComments(
+      comments.slice(
+        showComments - COMMENTS_STEP,
+        Math.min(showComments, comments.length)
+      )
+    );
+  }
+  renderSocialCommentsCount(data);
+};
+
 const renderBigPicture = (picturesData) => {
   bigPictureImgContainer.src = picturesData.url;
   bigPictureImgContainer.alt = picturesData.description;
   likesCountContainer.textContent = picturesData.likes;
+  captionContainer.textContent = picturesData.description;
+  commentsCount.textContent = picturesData.comments.length;
 
   commentsContainer.innerHTML = '';
-  createComments(picturesData.comments);
+
+  createComments(picturesData.comments.slice(0, showComments));
+  renderSocialCommentsCount(picturesData);
+  socialCommentLoader.addEventListener('click', () =>
+    onShowMoreButtonClick(picturesData.comments, picturesData)
+  );
 };
 
 const openPicturePopup = (data) => {

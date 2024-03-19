@@ -35,6 +35,7 @@ const showErrorPopup = () => {
 const showSuccessPopup = () => {
   const successElement = successTemplate.cloneNode(true);
   const closeSuccessButton = successElement.querySelector('.success__button');
+  const successInner = successElement.querySelector('.success__inner');
   bodyContainer.append(successElement);
 
   const closePopupSuccess = () => {
@@ -43,6 +44,8 @@ const showSuccessPopup = () => {
   };
 
   closeSuccessButton.addEventListener('click', () => closePopupSuccess());
+  successInner.addEventListener('click', (evt) => evt.stopPropagation());
+  successElement.addEventListener('click', () => closePopupSuccess());
 
   function onDocumentKeydown(evt) {
     if (evt.key === 'Escape') {

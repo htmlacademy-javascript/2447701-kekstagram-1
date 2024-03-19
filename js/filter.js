@@ -26,7 +26,7 @@ const getFilterPictures = (pictures) => {
     case Filter.DEFAULT:
       return pictures;
     default:
-      throw new Error('Unknown filter: ${currentFilter}');
+      throw new Error(`Unknown filter: ${currentFilter}`);
   }
 };
 

@@ -6,6 +6,7 @@ import { initEffectSlider } from './effect.js';
 import { getData } from './api.js';
 import { showAlert, debounce } from './util.js';
 import { initFilter } from './filter.js';
+import { initLoadedPictures } from './loading-picture.js';
 
 const debouncedPictureRender = debounce(renderPictures);
 
@@ -21,3 +22,4 @@ getData()
   .catch((err) => {
     showAlert(err.message);
   });
+initLoadedPictures();
